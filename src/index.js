@@ -15,8 +15,7 @@ const store = createStore(
   reducers,
   composeEnhancers(
     applyMiddleware(
-      thunk,
-      // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+      thunk
     )
   )
 );
