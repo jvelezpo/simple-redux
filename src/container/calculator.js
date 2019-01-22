@@ -68,20 +68,9 @@ class Calculator extends Component {
             <button onClick={this.mul}>Multiply</button>
           </div>
         </div>
-        <hr />
-        <h3>Results</h3>
-        <ul>
-          {this.props.math.map((m, i) => (
-            <li key={i}>{m}</li>
-          ))}
-        </ul>
       </div>
     );
   }
-}
-
-function mapStateToProps({ math }) {
-  return { math };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -94,6 +83,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(
-  mapStateToProps,
+  undefined,
   mapDispatchToProps
 )(Calculator);
