@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const getGithubInfo = username => {
+export function getGithubInfo(username) {
   return dispatch => {
     return axios.get(`https://api.github.com/users/${username}`)
       .then(response => {
