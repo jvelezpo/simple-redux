@@ -1,73 +1,35 @@
-import React, { Component } from 'react';
-import { bindActionCreators } from 'redux'
-import { connect } from 'react-redux'
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
 
-import { sendResult } from './actions';
-
-import './App.css';
+import Calculator from "./container/calculator";
+import Index from "./container/index";
+import Other from "./container/other";
 
 class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      sumN: 0,
-      sumM: 0,
-      mulN: 0,
-      mulM: 0
-    };
-    this.add = this.add.bind(this);
-    this.mul = this.mul.bind(this);
-  }
-
-  add() {
-    this.props.sendResult(`Sum: ${this.state.sumN} * ${this.state.sumM} = ${this.state.sumN + this.state.sumM}`);
-    this.setState({ sumN: 0, sumM: 0 });
-  }
-
-  mul() {
-    this.props.sendResult(`Mul: ${this.state.mulN} * ${this.state.mulM} = ${this.state.mulN * this.state.mulM}`);
-    this.setState({ mulN: 0, mulM: 0 });
-  }
-
   render() {
     return (
-      <div>
+      <Router>
         <div>
-          <input type="number" value={this.state.sumN} onChange={e => this.setState({ sumN: +e.target.value })}/>
-          +
-          <input type="number" value={this.state.sumM} onChange={e => this.setState({ sumM: +e.target.value })}/>
-          <button onClick={this.add}>Add</button>
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/calculator/">calculator</Link>
+              </li>
+              <li>
+                <Link to="/other/">other</Link>
+              </li>
+            </ul>
+          </nav>
+          <Route path="/" exact component={Index} />
+          <Route path="/calculator/" component={Calculator} />
+          <Route path="/other/" component={Other} />
         </div>
-        <div>
-          <input type="number" value={this.state.mulN} onChange={e => this.setState({ mulN: +e.target.value })}/>
-          *
-          <input type="number" value={this.state.mulM} onChange={e => this.setState({ mulM: +e.target.value })}/>
-          <button onClick={this.mul}>Multiply</button>
-        </div>
-        <hr/>
-        <h3>Results</h3>
-        <ul>
-          {this.props.math.map((m, i) => <li key={i}>{m}</li>)}
-        </ul>
-      </div>
+      </Router>
     );
   }
 }
 
-function mapStateToProps({ math }) {
-  return { math }
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators(
-    {
-      sendResult
-    },
-    dispatch
-  )
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App)
+export default App;
