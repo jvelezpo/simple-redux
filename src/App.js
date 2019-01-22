@@ -1,28 +1,73 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+
+import { sendResult } from './actions';
+
 import './App.css';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      sumN: 0,
+      sumM: 0,
+      mulN: 0,
+      mulM: 0
+    };
+    this.add = this.add.bind(this);
+    this.mul = this.mul.bind(this);
+  }
+
+  add() {
+    this.props.sendResult(`Sum: ${this.state.sumN} * ${this.state.sumM} = ${this.state.sumN + this.state.sumM}`);
+    this.setState({ sumN: 0, sumM: 0 });
+  }
+
+  mul() {
+    this.props.sendResult(`Mul: ${this.state.mulN} * ${this.state.mulM} = ${this.state.mulN * this.state.mulM}`);
+    this.setState({ mulN: 0, mulM: 0 });
+  }
+
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+      <div>
+        <div>
+          <input type="number" value={this.state.sumN} onChange={e => this.setState({ sumN: +e.target.value })}/>
+          +
+          <input type="number" value={this.state.sumM} onChange={e => this.setState({ sumM: +e.target.value })}/>
+          <button onClick={this.add}>Add</button>
+        </div>
+        <div>
+          <input type="number" value={this.state.mulN} onChange={e => this.setState({ mulN: +e.target.value })}/>
+          *
+          <input type="number" value={this.state.mulM} onChange={e => this.setState({ mulM: +e.target.value })}/>
+          <button onClick={this.mul}>Multiply</button>
+        </div>
+        <hr/>
+        <h3>Results</h3>
+        <ul>
+          {this.props.math.map((m, i) => <li key={i}>{m}</li>)}
+        </ul>
       </div>
     );
   }
 }
 
-export default App;
+function mapStateToProps({ math }) {
+  return { math }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(
+    {
+      sendResult
+    },
+    dispatch
+  )
+}
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(App)
